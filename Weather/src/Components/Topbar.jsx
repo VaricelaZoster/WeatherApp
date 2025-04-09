@@ -4,7 +4,7 @@ import './Topbar.css';
 const Topbar = ({ setWeatherData, setWeeklyData }) => {
   const [city, setCity] = useState('');
   const [searchLabel, setSearchLabel] = useState('Weather');
-  const apiKey = "8a5bbdfe6738f53c7006c6f535ae9be6"
+  const apiKey = ""
 
   const handleKeyDown = async (e) => {
     if (e.key === 'Enter' && city.trim() !== '') {
