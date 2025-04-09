@@ -4,7 +4,8 @@ import './Topbar.css';
 const Topbar = ({ setWeatherData, setWeeklyData }) => {
   const [city, setCity] = useState('');
   const [searchLabel, setSearchLabel] = useState('Weather');
-  const apiKey = ""
+  const apiKey = import.meta.env.VITE_API_KEY
+
 
   const handleKeyDown = async (e) => {
     if (e.key === 'Enter' && city.trim() !== '') {
@@ -15,7 +16,6 @@ const Topbar = ({ setWeatherData, setWeeklyData }) => {
         const currentUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`;
         const currentRes = await fetch(currentUrl);
         const currentData = await currentRes.json();
-
         setWeatherData({
           temp: currentData.main.temp,
           feels_like: currentData.main.feels_like,
@@ -38,6 +38,7 @@ const Topbar = ({ setWeatherData, setWeeklyData }) => {
 
       } catch (err) {
         console.error('Error fetching data:', err);
+        alert("SOMETHING WENT WRONG")
       }
 
       setCity('');

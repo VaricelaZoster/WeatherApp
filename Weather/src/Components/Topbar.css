@@ -13,6 +13,7 @@
   font-size: 1.5rem;
   font-weight: bold;
   color: #2563eb;
+  text-transform: uppercase;
 }
 
 .search-input {
