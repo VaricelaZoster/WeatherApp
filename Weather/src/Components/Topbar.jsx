@@ -1,36 +1,43 @@
 import React, { useState } from 'react';
-import './Topbar.css'
+import './Topbar.css';
 
-const Topbar = ({ setWeatherData }) => {
+const Topbar = ({ setWeatherData, setWeeklyData }) => {
   const [city, setCity] = useState('');
   const [searchLabel, setSearchLabel] = useState('Weather');
-
-  const apiKey = "";
+  const apiKey = "8a5bbdfe6738f53c7006c6f535ae9be6"
 
   const handleKeyDown = async (e) => {
     if (e.key === 'Enter' && city.trim() !== '') {
-      setSearchLabel(city);
-
-      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+      const cityName = city.trim();
+      setSearchLabel(cityName);
 
       try {
-        const response = await fetch(url);
-        const data = await response.json();
-
-        console.log('Full API response:', data); // Logs everything
+        const currentUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`;
+        const currentRes = await fetch(currentUrl);
+        const currentData = await currentRes.json();
 
         setWeatherData({
-          temp: data.main.temp,
-          feels_like: data.main.feels_like,
-          desc: data.weather[0].description,
-          icon: data.weather[0].icon,
-          humidity: data.main.humidity,
-          wind: data.wind.speed,
-          clouds: data.clouds.all,
-          visibility: data.visibility,
+          temp: currentData.main.temp,
+          feels_like: currentData.main.feels_like,
+          desc: currentData.weather[0].description,
+          icon: currentData.weather[0].icon,
+          humidity: currentData.main.humidity,
+          wind: currentData.wind.speed,
+          clouds: currentData.clouds.all,
+          visibility: currentData.visibility,
         });
-      } catch (error) {
-        console.error('Error fetching weather data:', error);
+
+        const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}`
+        const forecastRes = await fetch(forecastUrl);
+        const forecastData = await forecastRes.json();
+        console.log(forecastData)
+
+        if (forecastData.list) {
+          setWeeklyData(forecastData.list); // pass array of 7-day forecast
+        }
+
+      } catch (err) {
+        console.error('Error fetching data:', err);
       }
 
       setCity('');
